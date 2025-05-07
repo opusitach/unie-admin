@@ -19,7 +19,7 @@ jobs:
     - name: Install SSH Key
       uses: shimataro/ssh-key-action@v2
       with:
-        key: ${{ secrets.secret_working_key }}
+        key: ${{ secrets.SECRET_WORKING_KEY }}
         known_hosts: 141.95.17.102
 
     # Деплой на сервер

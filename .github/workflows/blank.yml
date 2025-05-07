@@ -25,7 +25,7 @@ jobs:
     # Деплой на сервер
     - name: Deploy to Server
       run: |
-        ssh -o StrictHostKeyChecking=no ubuntu@141.95.17.102 '
-          cd ~ &&
-          cd unie-admin &&
-          git pull origin master &&
+        ssh -o StrictHostKeyChecking=no ubuntu@141.95.17.102 << 'EOF'
+          cd ~/unie-admin
+          git pull origin master
+        EOF

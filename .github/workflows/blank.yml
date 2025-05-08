@@ -1,6 +1,5 @@
 name: Deploy to Dev Server
 
-# Запускается при пуше в ветку master
 on:
   push:
     branches:
@@ -11,22 +10,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # Чекаут кода
-    - name: Checkout code
-      uses: actions/checkout@v3
+      # Чекаут кода
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    # Установка SSH ключа для доступа к серверу
-    - name: Install SSH Key
-      uses: shimataro/ssh-key-action@v2
-      with:
-        key: ${{ secrets.secret_working_key }}
-        known_hosts: 141.95.17.102
+      # Добавление known_hosts
+      - name: Add known_hosts
+        run: |
+          ssh-keyscan -H 141.95.17.102 >> ~/.ssh/known_hosts
 
-    # Деплой на сервер
-    - name: Deploy to Server
-      run: |
-        ssh -o StrictHostKeyChecking=no ubuntu@141.95.17.102 '
-          cd ~ &&
-          cd unie &&
-          git pull origin master
-        '
+      # Установка SSH ключа
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.secret_working_key }}
+          known_hosts: unnecessary
+
+      # Деплой на сервер
+      - name: Deploy to Server
+        run: |
+          ssh ubuntu@141.95.17.102 '
+            cd /home/ubuntu/unie-admin &&
+            git pull origin master || { echo "Git pull failed"; exit 1; }
+          '

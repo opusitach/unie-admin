@@ -14,10 +14,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # Создание директории ~/.ssh и настройка прав
+      - name: Setup SSH directory
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+
       # Добавление known_hosts
       - name: Add known_hosts
         run: |
           ssh-keyscan -H 141.95.17.102 >> ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
 
       # Установка SSH ключа
       - name: Install SSH Key
@@ -32,4 +39,3 @@ jobs:
           ssh ubuntu@141.95.17.102 '
             cd /home/ubuntu/unie-admin &&
             git pull origin master || { echo "Git pull failed"; exit 1; }
-          '

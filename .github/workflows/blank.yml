@@ -39,3 +39,4 @@ jobs:
           ssh ubuntu@141.95.17.102 '
             cd /home/ubuntu/unie-admin &&
             git pull origin master || { echo "Git pull failed"; exit 1; }
+          '
